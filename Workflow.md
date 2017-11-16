@@ -15,7 +15,7 @@ Step 1 extracts the layer with the highest resolution (default is 0) from the im
 >>> preprocess [Press Enter]
 ```
 
-#### Step 1: Image preprocessing for single image
+##### Image preprocessing for single image in the command line whithout runCP.py
 
 Choose series with the highest resolution (default is 0).
 
