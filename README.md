@@ -5,7 +5,7 @@ This is a general workflow, used for the quantitative analysis of multiple IHC-I
 
 #### Preprocessing
 
-For the preparation of the IHC images for further analysis we used the script collection bftools from the [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764)<sup>6</sup>. As a first step, high-resolution bright-field images were extracted from the image containers. Following this, each of these high-resolution images was tiled into smaller subimages, which can be used as training data.
+For the preparation of the IHC-images for further analysis, we used the script collection bftools from the [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764)<sup>6</sup>. As a first step, high-resolution bright-field images were extracted from the image containers. Following this, each of these high-resolution images was tiled into smaller subimages, which can be used as training data.
 
 ![alt text](/images/preprocessing.jpg)
 
@@ -24,13 +24,8 @@ in the following segmentation and quantification step.
 
 #### Cell counting and extraction of spatial features
 
-The segmentation and counting, as the final step in this workflow, was performed by CellProfiler. The probability maps, 
-were loaded into CellProfiler either using the GUI or running it from the command line, which can be done by using the
-python script [runCP.py](/runCP.py). We created a pipeline ([IHCount.cppipe](/IHCount.cppipe)) that utilises
-several internal modules to identify positive stained cells, nuclei and the area of tissue. As a first step the probability
-maps were split by the different colour channels red, blue and green and converted into grayscale. By multiple intensity
-based operations, we tried to reduce noise and to isolate the three different classes as good as possible. In the end,
-we received result tables for each image, which list the questioned parameters for each single tile.
+The segmentation and counting, as the final step in this workflow, was performed by CellProfiler. The probability maps 
+were loaded into CellProfiler, either using the GUI or running it from the command line. We created a pipeline ([IHCount.cppipe](/IHCount.cppipe)) that utilises several internal modules to identify positive stained cells, nuclei and the area of tissue. As a first step the probability maps were split by the different colour channels red, blue and green and converted into grayscale. By multiple intensity based operations, we tried to reduce noise and to isolate the three different classes as good as possible. In the end, we received result tables for each image, which list the questioned parameters for each single tile.
 
 ![alt text](/images/cp_workflow.jpg)
 
