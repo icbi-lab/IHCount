@@ -7,7 +7,7 @@ Start [runCP.py](/runCP.py) in the command line
 ```bash
 > python runCP.py
 ```
-#### Step 1: Image preprocessing
+### Step 1: Image preprocessing
 
 Step 1 extracts the layer with the highest resolution (default is 0) from the image container [Aperio, Leica,....] and saves it as .tif. The image gets tiled into smaller subimages [2000x2000 px], saved in a subdirectory (imageX.tiles). 
 
@@ -15,7 +15,7 @@ Step 1 extracts the layer with the highest resolution (default is 0) from the im
 >>> preprocess [Press Enter]
 ```
 
-##### Image preprocessing for single image in the command line whithout runCP.py
+#### Image preprocessing for single image in the command line whithout runCP.py
 
 Choose series with the highest resolution (default is 0).
 
@@ -51,7 +51,7 @@ After that, the directory structure should look like this
 
 ```
 
-#### Step 2: Training and classification of positively stained cells
+### Step 2: Training and classification of positively stained cells
 
 Start Ilastik application and create a project file (*.ilp). Use the <b>Pixel Classificator</b> module and annotate the classes (e.g. CD8 positives, tissue, background, nuclei) we want to identify on the IHC-image.
 
@@ -68,7 +68,7 @@ As training data, use a subset of the previously created image tiles. For the di
 Run a batch process on all image tiles in the directory <b>imageX.tiles</b> and export a probability map for each of tile into this directory.  
 
 
-#### Step 3: Counting cells and extracting spatial features
+### Step 3: Counting cells and extracting spatial features
 
 Create a text file <b>fileList.txt</b> containing the absolute path for each image tile, which is needed for further processing steps using CellProfiler.
 
@@ -112,7 +112,7 @@ as single command
 
 ```
 
-#### Step 4: Summarise result tables
+### Step 4: Summarise result tables
 
 ```bash
 >>> summarise [Press Enter]
