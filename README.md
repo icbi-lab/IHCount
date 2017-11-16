@@ -37,4 +37,4 @@ were loaded into CellProfiler, either using the GUI or running it from the comma
 3. [VIPS Project](http://www.vips.ecs.soton.ac.uk) - Image processing library
 4. [Ilastik 1.2.2](http://ilastik.org/download.html) - Interactive learning and segmentation toolkit
 5. [CellProfiler 2.2.0](http://cellprofiler.org) - Cell image analysis software
-6. [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764) Linkert, M. et al. Metadata matters: access to image data in the real world. J. Cell Biol. 189, 777–782 (2010
+6. [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764) Linkert, M. et al. Metadata matters: access to image data in the real world. J. Cell Biol. 189, 777–782 (2010)
