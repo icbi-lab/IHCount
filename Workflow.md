@@ -62,7 +62,7 @@ As training data, use a subset of the previously created image tiles. For the di
 * The classifier <b>positives</b> was trained on background [blue], tissue (includes also non-positive nuclei) [green] and positively stained nuclei (CD8,CD4,...) [red].
 
 <p align="center">
-  <img src="https://github.com/mui-icbi/images/annotation.png?raw=true" alt="positives"/>
+  <img width="281" height="185" src="https://github.com/mui-icbi/IHCount/blob/master/images/annotation.png?raw=true" alt="positives"/>
 </p>
 
 Run a batch process on all image tiles in the directory <b>imageX.tiles</b> and export a probability map for each of tile into this directory.  
