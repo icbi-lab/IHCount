@@ -7,7 +7,7 @@ This is a general workflow, used for the quantitative analysis of multiple IHC-I
 
 For the preparation of the IHC images for further analysis we used the script collection bftools from the [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764)<sup>6</sup>. As a first step, high-resolution bright-field images were extracted from the image containers. Following this, each of these high-resolution images was tiled into smaller subimages, which can be used as training data.
 
-![alt text](/images/preprocessing.png)
+![alt text](/images/preprocessing.jpg)
 
 
 #### Classification
