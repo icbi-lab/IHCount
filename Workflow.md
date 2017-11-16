@@ -9,7 +9,7 @@ Start [runCP.py](/runCP.py) in the command line
 ```
 #### Step 1: Image preprocessing
 
-Step 1 extracts the layer with the highest resolution (default is 0) from the image container [Aperio, Leica,....] and saves it as .tif. The image get tiled into smaller subimages [2000x2000 px] and saved in a subdirectory (imageX.tiles). 
+Step 1 extracts the layer with the highest resolution (default is 0) from the image container [Aperio, Leica,....] and saves it as .tif. The image gets tiled into smaller subimages [2000x2000 px], saved in a subdirectory (imageX.tiles). 
 
 ```bash
 >>> preprocess [Press Enter]
@@ -28,7 +28,7 @@ Choose series with the highest resolution (default is 0).
 > ./bftools/bfconvert -debug -tilex 2000 -tiley 2000 imageID.tif imageX.tiles/imageX.X%x.Y%y.tile.tissue.tif
 
 ```
-After that, the directory structure should look like
+After that, the directory structure should look like this
 
 ```bash
 
@@ -53,7 +53,7 @@ After that, the directory structure should look like
 
 #### Step 2: Training and classification of positively stained cells
 
-Start Ilastik application and create a project file (*.ilp). Use the <b>Pixel Classificator</b> module and annotate the classes (e.g. CD8 positives, tissue, background, nuclei) we want to identify on the IHC image.
+Start Ilastik application and create a project file (*.ilp). Use the <b>Pixel Classificator</b> module and annotate the classes (e.g. CD8 positives, tissue, background, nuclei) we want to identify on the IHC-image.
 
 As training data, use a subset of the previously created image tiles. For the different classes we used red, blue and green as color codes. We created two classifiers: 
 
@@ -99,7 +99,7 @@ Create a text file <b>fileList.txt</b> containing the absolute path for each ima
 
 ```
 
-The segmentation and object detection was conducted with <b>CellProfiler</b> and the [IHCount.cppipe](/IHCount.cppipe) pipeline. You can call CellProfiler either in the GUI or from the command line [runCP.py](/runCP.py)
+The segmentation and object detection was conducted by <b>CellProfiler</b> using the [IHCount.cppipe](/IHCount.cppipe) pipeline. You can call CellProfiler either in the GUI or from the command line [runCP.py](/runCP.py)
 
 ```bash
 >>> count [Press Enter]
@@ -148,4 +148,4 @@ The IHCount pipeline exports a <b>result_Image.csv</b> file, which contains the 
 
 ```
 
-The files <b>result_Nuclei.csv</b> and <b>result_Positives.csv</b> contain information about location of the objects on the analysed tile.
+The files <b>result_Nuclei.csv</b> and <b>result_Positives.csv</b> contain information about location of the objects on the analysed tile, which can be used for additional spatial analysis.
