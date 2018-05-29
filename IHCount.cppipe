@@ -1,55 +1,61 @@
 CellProfiler Pipeline: http://www.cellprofiler.org
 Version:3
-DateRevision:20160418141927
-GitHash:9969f42
-ModuleCount:23
+DateRevision:300
+GitHash:
+ModuleCount:38
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     :
-    Filter images?:No filtering
-    Select the rule criteria:and (extension does isimage) (file does contain "Probabilities_nuclei") (directory doesnot containregexp "\x5B\\\\\\\\\\\\\\\\/\x5D\\\\\\\\.")
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp "\x5B\\\\\\\\\\\\\\\\/\x5D\\\\\\\\.")
 
 Metadata:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\'The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Extract metadata?:No
+    Extract metadata?:Yes
     Metadata data type:Text
     Metadata types:{}
     Extraction method count:1
     Metadata extraction method:Extract from file/folder names
     Metadata source:File name
-    Regular expression:^(?P<Plate>.*)_(?P<Well>\x5BA-P\x5D\x5B0-9\x5D{2})_s(?P<Site>\x5B0-9\x5D)_w(?P<ChannelNumber>\x5B0-9\x5D)
-    Regular expression:(?P<Date>\x5B0-9\x5D{4}_\x5B0-9\x5D{2}_\x5B0-9\x5D{2})$
+    Regular expression to extract from file name:^(?P<Patient>(.*?\x5B^\\\\.\x5D+)).(?P<Tile>(X*\x5B0-9\x5D*.Y*\x5B0-9\x5D*))
+    Regular expression to extract from folder name:(?P<Date>\x5B0-9\x5D{4}_\x5B0-9\x5D{2}_\x5B0-9\x5D{2})$
     Extract metadata from:All images
     Select the filtering criteria:and (file does contain "")
     Metadata file location:
     Match file and image metadata:\x5B\x5D
     Use case insensitive matching?:No
 
-NamesAndTypes:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:6|show_window:False|notes:\x5B\'The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+NamesAndTypes:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\'The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Assign a name to:Images matching rules
-    Select the image type:Color image
-    Name to assign these images:Original
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
     Match metadata:\x5B\x5D
     Image set matching method:Order
     Set intensity range from:Image metadata
-    Assignments count:2
+    Assignments count:3
     Single images count:0
     Maximum intensity:255.0
-    Select the rule criteria:and (file does contain "Probabilities_positives.tif")
-    Name to assign these images:positives
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (file does contain "_nuclei")
+    Name to assign these images:nuclei
     Name to assign these objects:Cell
     Select the image type:Color image
     Set intensity range from:Image metadata
-    Retain outlines of loaded objects?:No
-    Name the outline image:LoadedOutlines
     Maximum intensity:255.0
-    Select the rule criteria:and (file does contain "Probabilities_nuclei.tif")
-    Name to assign these images:nuclei
+    Select the rule criteria:and (file does contain "_positives")
+    Name to assign these images:positives
     Name to assign these objects:Nucleus
     Select the image type:Color image
     Set intensity range from:Image metadata
-    Retain outlines of loaded objects?:No
-    Name the outline image:LoadedOutlines
+    Maximum intensity:255.0
+    Select the rule criteria:and (file does contain "tile.tissue.")
+    Name to assign these images:original
+    Name to assign these objects:Cytoplasm
+    Select the image type:Color image
+    Set intensity range from:Image metadata
     Maximum intensity:255.0
 
 Groups:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\'The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.\'\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
@@ -57,7 +63,75 @@ Groups:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:2|show_win
     grouping metadata count:1
     Metadata category:None
 
-ColorToGray:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+FlagImage:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:1
+    Hidden:6
+    Name the flag\'s category:Metadata
+    Name the flag:Flag_size
+    How should measurements be linked?:Flag if any fail
+    Skip image set if flagged?:Yes
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Height_nuclei
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Width_nuclei
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Height_positives
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Width_positives
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Height_original
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:Width_original
+    Flag images based on low values?:Yes
+    Minimum value:2000.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+
+ColorToGray:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:nuclei
     Conversion method:Split
     Image type:RGB
@@ -66,11 +140,11 @@ ColorToGray:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:3|sho
     Relative weight of the green channel:1.0
     Relative weight of the blue channel:1.0
     Convert red to gray?:Yes
-    Name the output image:OrigRed
+    Name the output image:nucleiRed
     Convert green to gray?:Yes
-    Name the output image:OrigGreen
+    Name the output image:nucleiGreen
     Convert blue to gray?:Yes
-    Name the output image:OrigBlue
+    Name the output image:nucleiBlue
     Convert hue to gray?:Yes
     Name the output image:OrigHue
     Convert saturation to gray?:Yes
@@ -82,7 +156,186 @@ ColorToGray:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:3|sho
     Relative weight of the channel:1.0
     Image name:Channel1
 
-ColorToGray:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+Threshold:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiRed
+    Name the output image:nucleiRedThreshold
+    Threshold strategy:Global
+    Thresholding method:Manual
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.6
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+Threshold:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiBlue
+    Name the output image:nucleiBlueThreshold
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+Threshold:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiGreen
+    Name the output image:nucleiGreenThreshold
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+MeasureImageAreaOccupied:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:3
+    Measure the area occupied in a binary image, or in objects?:Binary Image
+    Select objects to measure:None
+    Select a binary image to measure:nucleiRedThreshold
+    Measure the area occupied in a binary image, or in objects?:Binary Image
+    Select objects to measure:None
+    Select a binary image to measure:nucleiBlueThreshold
+    Measure the area occupied in a binary image, or in objects?:Binary Image
+    Select objects to measure:None
+    Select a binary image to measure:nucleiGreenThreshold
+
+FlagImage:[module_num:11|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:1
+    Hidden:2
+    Name the flag\'s category:Metadata
+    Name the flag:Flag_background
+    How should measurements be linked?:Flag if all fail
+    Skip image set if flagged?:Yes
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:AreaOccupied_AreaOccupied_nucleiRedThreshold
+    Flag images based on low values?:Yes
+    Minimum value:5.0
+    Flag images based on high values?:No
+    Maximum value:1.0
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+    Flag is based on:Whole-image measurement
+    Select the object to be used for flagging:None
+    Which measurement?:AreaOccupied_AreaOccupied_nucleiBlueThreshold
+    Flag images based on low values?:No
+    Minimum value:0.0
+    Flag images based on high values?:Yes
+    Maximum value:3800000
+    Rules file location:Elsewhere...\x7C
+    Rules file name:rules.txt
+    Class number:
+
+RemoveHoles:[module_num:12|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiRedThreshold
+    Name the output image:ClosedNuclei
+    Size:5
+
+MaskImage:[module_num:13|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiRed
+    Name the output image:nucleiRedMasked
+    Use objects or an image as a mask?:Image
+    Select object for mask:None
+    Select image for mask:ClosedNuclei
+    Invert the mask?:No
+
+IdentifyPrimaryObjects:[module_num:14|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:nucleiRedMasked
+    Name the primary objects to be identified:DetectedNuclei
+    Typical diameter of objects, in pixel units (Min,Max):5,30
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:10
+    Speed up by using lower-resolution image to find local maxima?:No
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:No
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:10
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.75
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+ExpandOrShrinkObjects:[module_num:15|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:DetectedNuclei
+    Name the output objects:ShrunkenNuclei
+    Select the operation:Add partial dividing lines between objects
+    Number of pixels by which to expand or shrink:1
+    Fill holes in objects so that all objects shrink to a single point?:No
+
+ExpandOrShrinkObjects:[module_num:16|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:ShrunkenNuclei
+    Name the output objects:ShrunkenNuclei2
+    Select the operation:Shrink objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:4
+    Fill holes in objects so that all objects shrink to a single point?:Yes
+
+ExpandOrShrinkObjects:[module_num:17|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:ShrunkenNuclei2
+    Name the output objects:ShrunkenNuclei3
+    Select the operation:Expand objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:4
+    Fill holes in objects so that all objects shrink to a single point?:Yes
+
+OverlayOutlines:[module_num:18|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:original
+    Name the output image:OrigOverlayNuclei
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Inner
+    Select outline color:red
+    Select objects to display:ShrunkenNuclei3
+
+ColorToGray:[module_num:19|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:positives
     Conversion method:Split
     Image type:RGB
@@ -91,11 +344,11 @@ ColorToGray:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:3|sho
     Relative weight of the green channel:1.0
     Relative weight of the blue channel:1.0
     Convert red to gray?:Yes
-    Name the output image:OrigRedPos
+    Name the output image:positivesRed
     Convert green to gray?:Yes
-    Name the output image:OrigGreenPos
+    Name the output image:positivesGreen
     Convert blue to gray?:Yes
-    Name the output image:OrigBluePos
+    Name the output image:positivesBlue
     Convert hue to gray?:Yes
     Name the output image:OrigHue
     Convert saturation to gray?:Yes
@@ -107,398 +360,252 @@ ColorToGray:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:3|sho
     Relative weight of the channel:1.0
     Image name:Channel1
 
-ImageMath:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Add
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Ignore the image masks?:No
-    Name the output image:ImageAfterMathNuclei
-    Image or measurement?:Image
-    Select the first image:OrigBlue
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:OrigGreen
-    Multiply the second image by:1.0
-    Measurement:
-
-ImageMath:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Invert
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Ignore the image masks?:No
-    Name the output image:ImageAfterMathNucleiInverted
-    Image or measurement?:Image
-    Select the first image:ImageAfterMathNuclei
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:OrigGreen
-    Multiply the second image by:1.0
-    Measurement:
-
-ImageMath:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Add
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Ignore the image masks?:No
-    Name the output image:ImageAfterMathPos
-    Image or measurement?:Image
-    Select the first image:OrigGreenPos
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:OrigBluePos
-    Multiply the second image by:1.0
-    Measurement:
-
-ImageMath:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Invert
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Ignore the image masks?:No
-    Name the output image:ImageAfterMathPosInverted
-    Image or measurement?:Image
-    Select the first image:ImageAfterMathPos
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:OrigGreen
-    Multiply the second image by:1.0
-    Measurement:
-
-ImageMath:[module_num:11|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Operation:Add
-    Raise the power of the result by:1.0
-    Multiply the result by:1.0
-    Add to result:0.0
-    Set values less than 0 equal to 0?:Yes
-    Set values greater than 1 equal to 1?:Yes
-    Ignore the image masks?:No
-    Name the output image:ImageAfterMathArea
-    Image or measurement?:Image
-    Select the first image:OrigRed
-    Multiply the first image by:1.0
-    Measurement:
-    Image or measurement?:Image
-    Select the second image:OrigGreen
-    Multiply the second image by:1.0
-    Measurement:
-
-ApplyThreshold:[module_num:12|svn_version:\'Unknown\'|variable_revision_number:7|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:ImageAfterMathArea
-    Name the output image:ThreshArea
-    Select the output image type:Binary (black and white)
-    Set pixels below or above the threshold to zero?:Below threshold
-    Subtract the threshold value from the remaining pixel intensities?:No
-    Number of pixels by which to expand the thresholding around those excluded bright pixels:0.0
-    Threshold setting version:2
+Threshold:[module_num:20|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:positivesRed
+    Name the output image:positivesRedThreshold
     Threshold strategy:Global
-    Thresholding method:Otsu
-    Select the smoothing method for thresholding:Automatic
-    Threshold smoothing scale:1.0
+    Thresholding method:Manual
+    Threshold smoothing scale:0.0
     Threshold correction factor:1.0
     Lower and upper bounds on threshold:0.0,1.0
-    Approximate fraction of image covered by objects?:0.01
-    Manual threshold:0.0
+    Manual threshold:0.75
     Select the measurement to threshold with:None
-    Select binary image:None
-    Masking objects:None
-    Two-class or three-class thresholding?:Three classes
-    Minimize the weighted variance or the entropy?:Weighted variance
+    Two-class or three-class thresholding?:Two classes
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
-    Method to calculate adaptive window size:Image size
-    Size of adaptive window:10
-    Use default parameters?:Default
+    Size of adaptive window:50
     Lower outlier fraction:0.05
     Upper outlier fraction:0.05
     Averaging method:Mean
     Variance method:Standard deviation
     # of deviations:2.0
-
-IdentifyPrimaryObjects:[module_num:13|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:ImageAfterMathNucleiInverted
-    Name the primary objects to be identified:Nuclei
-    Typical diameter of objects, in pixel units (Min,Max):7,27
-    Discard objects outside the diameter range?:Yes
-    Try to merge too small objects with nearby larger objects?:No
-    Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:Intensity
-    Method to draw dividing lines between clumped objects:Intensity
-    Size of smoothing filter:10
-    Suppress local maxima that are closer than this minimum allowed distance:10
-    Speed up by using lower-resolution image to find local maxima?:No
-    Name the outline image:NucleiOutlines
-    Fill holes in identified objects?:Never
-    Automatically calculate size of smoothing filter for declumping?:Yes
-    Automatically calculate minimum allowed distance between local maxima?:Yes
-    Retain outlines of the identified objects?:Yes
-    Automatically calculate the threshold using the Otsu method?:Yes
-    Enter Laplacian of Gaussian threshold:0.5
-    Automatically calculate the size of objects for the Laplacian of Gaussian filter?:Yes
-    Enter LoG filter diameter:5.0
-    Handling of objects if excessive number of objects identified:Continue
-    Maximum number of objects:500
-    Threshold setting version:1
-    Threshold strategy:Global
     Thresholding method:Otsu
-    Select the smoothing method for thresholding:Automatic
-    Threshold smoothing scale:1.0
-    Threshold correction factor:3.5
+
+Threshold:[module_num:21|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:positivesGreen
+    Name the output image:positivesGreenThreshold
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
     Lower and upper bounds on threshold:0.0,1.0
-    Approximate fraction of image covered by objects?:0.01
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Select binary image:None
-    Masking objects:None
-    Two-class or three-class thresholding?:Three classes
-    Minimize the weighted variance or the entropy?:Weighted variance
+    Two-class or three-class thresholding?:Two classes
     Assign pixels in the middle intensity class to the foreground or the background?:Foreground
-    Method to calculate adaptive window size:Image size
-    Size of adaptive window:10
-    Use default parameters?:Default
+    Size of adaptive window:50
     Lower outlier fraction:0.05
     Upper outlier fraction:0.05
     Averaging method:Mean
     Variance method:Standard deviation
     # of deviations:2.0
-
-IdentifyPrimaryObjects:[module_num:14|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Select the input image:ImageAfterMathPosInverted
-    Name the primary objects to be identified:Potivies
-    Typical diameter of objects, in pixel units (Min,Max):7,27
-    Discard objects outside the diameter range?:Yes
-    Try to merge too small objects with nearby larger objects?:No
-    Discard objects touching the border of the image?:Yes
-    Method to distinguish clumped objects:Intensity
-    Method to draw dividing lines between clumped objects:Intensity
-    Size of smoothing filter:10
-    Suppress local maxima that are closer than this minimum allowed distance:10
-    Speed up by using lower-resolution image to find local maxima?:No
-    Name the outline image:Nuclei_PositiveOutlines
-    Fill holes in identified objects?:Never
-    Automatically calculate size of smoothing filter for declumping?:Yes
-    Automatically calculate minimum allowed distance between local maxima?:Yes
-    Retain outlines of the identified objects?:Yes
-    Automatically calculate the threshold using the Otsu method?:Yes
-    Enter Laplacian of Gaussian threshold:0.5
-    Automatically calculate the size of objects for the Laplacian of Gaussian filter?:Yes
-    Enter LoG filter diameter:5.0
-    Handling of objects if excessive number of objects identified:Continue
-    Maximum number of objects:500
-    Threshold setting version:1
-    Threshold strategy:Global
     Thresholding method:Otsu
-    Select the smoothing method for thresholding:Automatic
-    Threshold smoothing scale:1.0
-    Threshold correction factor:3.5
+
+Threshold:[module_num:22|svn_version:\'Unknown\'|variable_revision_number:10|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:positivesBlue
+    Name the output image:positivesBlueThreshold
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:0.0
+    Threshold correction factor:1.0
     Lower and upper bounds on threshold:0.0,1.0
-    Approximate fraction of image covered by objects?:0.01
     Manual threshold:0.0
     Select the measurement to threshold with:None
-    Select binary image:None
-    Masking objects:None
-    Two-class or three-class thresholding?:Three classes
-    Minimize the weighted variance or the entropy?:Weighted variance
-    Assign pixels in the middle intensity class to the foreground or the background?:Background
-    Method to calculate adaptive window size:Image size
-    Size of adaptive window:10
-    Use default parameters?:Default
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
     Lower outlier fraction:0.05
     Upper outlier fraction:0.05
     Averaging method:Mean
     Variance method:Standard deviation
     # of deviations:2.0
+    Thresholding method:Otsu
 
-MeasureImageAreaOccupied:[module_num:15|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Hidden:1
+MeasureImageAreaOccupied:[module_num:23|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Hidden:3
     Measure the area occupied in a binary image, or in objects?:Binary Image
     Select objects to measure:None
-    Retain a binary image of the object regions?:No
-    Name the output binary image:Stain
-    Select a binary image to measure:ThreshArea
+    Select a binary image to measure:positivesRedThreshold
+    Measure the area occupied in a binary image, or in objects?:Binary Image
+    Select objects to measure:None
+    Select a binary image to measure:positivesGreenThreshold
+    Measure the area occupied in a binary image, or in objects?:Binary Image
+    Select objects to measure:None
+    Select a binary image to measure:positivesBlueThreshold
 
-ExportToSpreadsheet:[module_num:16|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
-    Select the column delimiter:Comma (",")
-    Add image metadata columns to your object data file?:Yes
-    Limit output to a size that is allowed in Excel?:No
-    Select the measurements to export:No
-    Calculate the per-image mean values for object measurements?:Yes
-    Calculate the per-image median values for object measurements?:Yes
-    Calculate the per-image standard deviation values for object measurements?:Yes
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Create a GenePattern GCT file?:Yes
-    Select source of sample row name:Metadata
-    Select the image to use as the identifier:ImageAfterMathPosInverted
-    Select the metadata to use as the identifier:FileName_positives
-    Export all measurement types?:Yes
-    :
-    Representation of Nan/Inf:NaN
-    Add a prefix to file names?:Yes
-    Filename prefix:result_
-    Overwrite existing files without warning?:Yes
-    Data to export:Do not use
-    Combine these object measurements with those of the previous object?:No
-    File name:DATA.csv
-    Use the object name for the file name?:Yes
+Closing:[module_num:24|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:positivesRedThreshold
+    Name the output image:ClosingPositives
+    Structuring element:disk,1
 
-ExportToSpreadsheet:[module_num:17|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
-    Select the column delimiter:Comma (",")
-    Add image metadata columns to your object data file?:Yes
-    Limit output to a size that is allowed in Excel?:No
-    Select the measurements to export:No
-    Calculate the per-image mean values for object measurements?:Yes
-    Calculate the per-image median values for object measurements?:Yes
-    Calculate the per-image standard deviation values for object measurements?:Yes
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Create a GenePattern GCT file?:Yes
-    Select source of sample row name:Metadata
-    Select the image to use as the identifier:ImageAfterMathNucleiInverted
-    Select the metadata to use as the identifier:FileName_nuclei
-    Export all measurement types?:Yes
-    :
-    Representation of Nan/Inf:NaN
-    Add a prefix to file names?:Yes
-    Filename prefix:nuclei_
-    Overwrite existing files without warning?:Yes
-    Data to export:Do not use
-    Combine these object measurements with those of the previous object?:No
-    File name:DATA.csv
-    Use the object name for the file name?:Yes
+Watershed:[module_num:25|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ClosingPositives
+    Name the output object:WatershedPositives
+    Generate from:Markers
+    Markers:ClosingPositives
+    Mask:ClosingPositives
+    Connectivity:8
+    Downsample:1
 
-ExportToSpreadsheet:[module_num:18|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
-    Select the column delimiter:Comma (",")
-    Add image metadata columns to your object data file?:Yes
-    Limit output to a size that is allowed in Excel?:No
-    Select the measurements to export:No
-    Calculate the per-image mean values for object measurements?:Yes
-    Calculate the per-image median values for object measurements?:Yes
-    Calculate the per-image standard deviation values for object measurements?:Yes
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Create a GenePattern GCT file?:Yes
-    Select source of sample row name:Metadata
-    Select the image to use as the identifier:ImageAfterMathArea
-    Select the metadata to use as the identifier:AreaOccupied_AreaOccupied_ThreshArea
-    Export all measurement types?:Yes
-    :
-    Representation of Nan/Inf:NaN
-    Add a prefix to file names?:Yes
-    Filename prefix:result_
-    Overwrite existing files without warning?:Yes
-    Data to export:Do not use
-    Combine these object measurements with those of the previous object?:No
-    File name:DATA.csv
-    Use the object name for the file name?:Yes
+MeasureObjectSizeShape:[module_num:26|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select objects to measure:WatershedPositives
+    Calculate the Zernike features?:Yes
 
-SaveImages:[module_num:19|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
-    Select the type of image to save:Objects
-    Select the image to save:Nuclei_PositiveOutlines
-    Select the objects to save:Nuclei_Positive
-    Select the module display window to save:None
-    Select method for constructing file names:From image filename
-    Select image name for file prefix:Original
-    Enter single file name:OrigBlue
-    Number of digits:4
-    Append a suffix to the image file name?:Yes
-    Text to append to the image name:positiveNuclei
-    Saved file format:tif
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:Yes
-    When to save:Every cycle
-    Rescale the images? :No
-    Save as grayscale or color image?:Color
-    Select colormap:gray
-    Record the file and path information to the saved image?:Yes
-    Create subfolders in the output folder?:No
-    Base image folder:Default Input Folder sub-folder\x7CDesktop
-    Saved movie format:avi
+FilterObjects:[module_num:27|svn_version:\'Unknown\'|variable_revision_number:8|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to filter:WatershedPositives
+    Name the output objects:FilteredPositives
+    Select the filtering mode:Measurements
+    Select the filtering method:Limits
+    Select the objects that contain the filtered objects:None
+    Select the location of the rules or classifier file:Elsewhere...\x7C
+    Rules or classifier file name:rules.txt
+    Class number:1
+    Measurement count:1
+    Additional object count:0
+    Assign overlapping child to:Both parents
+    Select the measurement to filter by:AreaShape_MinFeretDiameter
+    Filter using a minimum measurement value?:Yes
+    Minimum value:5
+    Filter using a maximum measurement value?:Yes
+    Maximum value:100
 
-SaveImages:[module_num:20|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
-    Select the type of image to save:Image
-    Select the image to save:NucleiOutlines
-    Select the objects to save:None
-    Select the module display window to save:None
-    Select method for constructing file names:From image filename
-    Select image name for file prefix:Original
-    Enter single file name:OrigBlue
-    Number of digits:4
-    Append a suffix to the image file name?:Yes
-    Text to append to the image name:nuclei
-    Saved file format:tif
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Image bit depth:8-bit integer
-    Overwrite existing files without warning?:Yes
-    When to save:Every cycle
-    Rescale the images? :No
-    Save as grayscale or color image?:Grayscale
-    Select colormap:gray
-    Record the file and path information to the saved image?:No
-    Create subfolders in the output folder?:No
-    Base image folder:Default Input Folder sub-folder\x7CDesktop
-    Saved movie format:avi
+ExpandOrShrinkObjects:[module_num:28|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:FilteredPositives
+    Name the output objects:ShrunkenPositives
+    Select the operation:Add partial dividing lines between objects
+    Number of pixels by which to expand or shrink:1
+    Fill holes in objects so that all objects shrink to a single point?:No
 
-DisplayDataOnImage:[module_num:21|svn_version:\'Unknown\'|variable_revision_number:6|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
-    Display object or image measurements?:Object
-    Select the input objects:Nuclei
-    Measurement to display:Number_Object_Number
-    Select the image on which to display the measurements:originial
-    Text color:red
-    Name the output image that has the measurements displayed:DisplayImage
-    Font size (points):10
-    Number of decimals:2
-    Image elements to save:Image
-    Annotation offset (in pixels):0
-    Display mode:Text
-    Color map:Reds
-    Display background image?:Yes
-    Color map scale:Use this image\'s measurement range
-    Color map range:0.0,1.0
+ConvertObjectsToImage:[module_num:29|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:ShrunkenPositives
+    Name the output image:PossiblePositivesImage
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
 
-OverlayOutlines:[module_num:22|svn_version:\'Unknown\'|variable_revision_number:3|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+IdentifyPrimaryObjects:[module_num:30|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:PossiblePositivesImage
+    Name the primary objects to be identified:DetectedPositives
+    Typical diameter of objects, in pixel units (Min,Max):10,40
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:Intensity
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:5
+    Suppress local maxima that are closer than this minimum allowed distance:2.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After declumping only
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:10
+    Threshold strategy:Global
+    Thresholding method:Minimum cross entropy
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1.0
+    Lower and upper bounds on threshold:0.0,1.0
+    Manual threshold:0.75
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+OverlayOutlines:[module_num:31|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
     Display outlines on a blank image?:No
-    Select image on which to display outlines:originial
-    Name the output image:OrigNucleiOverlay
+    Select image on which to display outlines:OrigOverlayNuclei
+    Name the output image:OrigOverlayAll
     Outline display mode:Color
     Select method to determine brightness of outlines:Max of image
-    Width of outlines:1
-    Select outlines to display:None
-    Select outline color:#00FF13
-    Load outlines from an image or objects?:Objects
-    Select objects to display:Nuclei
+    How to outline:Inner
+    Select outline color:#00FF40
+    Select objects to display:DetectedPositives
 
-SaveImages:[module_num:23|svn_version:\'Unknown\'|variable_revision_number:11|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:False|wants_pause:False]
+MeasureObjectOverlap:[module_num:32|svn_version:\'Unknown\'|variable_revision_number:2|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the objects to be used as the ground truth basis for calculating the amount of overlap:DetectedNuclei
+    Select the objects to be tested for overlap against the ground truth:DetectedPositives
+    Calculate earth mover\'s distance?:No
+    Maximum # of points:250
+    Point selection method:K Means
+    Maximum distance:250
+    Penalize missing pixels:No
+
+ConvertObjectsToImage:[module_num:33|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:DetectedNuclei
+    Name the output image:DetectedNucleiImage
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ConvertObjectsToImage:[module_num:34|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:DetectedPositives
+    Name the output image:DetectedPositivesImage
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+ImageMath:[module_num:35|svn_version:\'Unknown\'|variable_revision_number:4|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Operation:And
+    Raise the power of the result by:1.0
+    Multiply the result by:1.0
+    Add to result:0.0
+    Set values less than 0 equal to 0?:Yes
+    Set values greater than 1 equal to 1?:Yes
+    Ignore the image masks?:No
+    Name the output image:ImageOfCommonObjects
+    Image or measurement?:Image
+    Select the first image:DetectedNucleiImage
+    Multiply the first image by:1.0
+    Measurement:
+    Image or measurement?:Image
+    Select the second image:PossiblePositivesImage
+    Multiply the second image by:1.0
+    Measurement:
+
+ConvertImageToObjects:[module_num:36|svn_version:\'Unknown\'|variable_revision_number:1|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:ImageOfCommonObjects
+    Name the output object:CommonObjects
+
+SaveImages:[module_num:37|svn_version:\'Unknown\'|variable_revision_number:13|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:True]
     Select the type of image to save:Image
-    Select the image to save:OrigNucleiOverlay
-    Select the objects to save:Nuclei
-    Select the module display window to save:None
+    Select the image to save:OrigOverlayAll
     Select method for constructing file names:From image filename
-    Select image name for file prefix:originial
+    Select image name for file prefix:original
     Enter single file name:OrigBlue
     Number of digits:4
     Append a suffix to the image file name?:Yes
-    Text to append to the image name:_nuclei
-    Saved file format:tif
-    Output file location:Default Output Folder sub-folder\x7CDesktop
-    Image bit depth:16-bit integer
+    Text to append to the image name:.overlay
+    Saved file format:tiff
+    Output file location:Default Output Folder\x7CDesktop\\\\\\\\lung\\\\\\\\results_old pipe
+    Image bit depth:8-bit integer
     Overwrite existing files without warning?:No
     When to save:Every cycle
-    Rescale the images? :No
-    Save as grayscale or color image?:Color
-    Select colormap:flag
     Record the file and path information to the saved image?:No
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...\x7C
-    Saved movie format:avi
+
+ExportToSpreadsheet:[module_num:38|svn_version:\'Unknown\'|variable_revision_number:12|show_window:False|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma (",")
+    Add image metadata columns to your object data file?:Yes
+    Select the measurements to export:Yes
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Output Folder\x7CDesktop\\\\\\\\lung\\\\\\\\results_old pipe
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:DetectedNuclei\x7CNumber_Object_Number,DetectedNuclei\x7CLocation_Center_Y,DetectedNuclei\x7CLocation_Center_X,DetectedNuclei\x7CLocation_Center_Z,DetectedPositives\x7CNumber_Object_Number,DetectedPositives\x7CLocation_Center_Y,DetectedPositives\x7CLocation_Center_X,DetectedPositives\x7CLocation_Center_Z,Image\x7CCount_DetectedNuclei,Image\x7CCount_DetectedPositives,Image\x7CCount_CommonObjects,Image\x7CAreaOccupied_Perimeter_positivesRedThreshold,Image\x7CAreaOccupied_Perimeter_nucleiBlueThreshold,Image\x7CAreaOccupied_Perimeter_positivesBlueThreshold,Image\x7CAreaOccupied_Perimeter_nucleiRedThreshold,Image\x7CAreaOccupied_Perimeter_nucleiGreenThreshold,Image\x7CAreaOccupied_Perimeter_positivesGreenThreshold,Image\x7CAreaOccupied_AreaOccupied_positivesBlueThreshold,Image\x7CAreaOccupied_AreaOccupied_nucleiBlueThreshold,Image\x7CAreaOccupied_AreaOccupied_positivesRedThreshold,Image\x7CAreaOccupied_AreaOccupied_nucleiRedThreshold,Image\x7CAreaOccupied_AreaOccupied_nucleiGreenThreshold,Image\x7CAreaOccupied_AreaOccupied_positivesGreenThreshold,Image\x7CAreaOccupied_TotalArea_positivesRedThreshold,Image\x7CAreaOccupied_TotalArea_nucleiBlueThreshold,Image\x7CAreaOccupied_TotalArea_positivesBlueThreshold,Image\x7CAreaOccupied_TotalArea_nucleiRedThreshold,Image\x7CAreaOccupied_TotalArea_nucleiGreenThreshold,Image\x7CAreaOccupied_TotalArea_positivesGreenThreshold,Image\x7CWidth_positives,Image\x7CWidth_nuclei,Image\x7CWidth_original,Image\x7CFileName_positives,Image\x7CFileName_nuclei,Image\x7CFileName_original,Image\x7CPathName_positives,Image\x7CPathName_nuclei,Image\x7CPathName_original,Image\x7CHeight_positives,Image\x7CHeight_nuclei,Image\x7CHeight_original,Image\x7CMetadata_Patient,Image\x7CMetadata_Flag_background,Image\x7CMetadata_Flag_size,Image\x7CMetadata_Tile,CommonObjects\x7CNumber_Object_Number,CommonObjects\x7CLocation_Center_Y,CommonObjects\x7CLocation_Center_X,CommonObjects\x7CLocation_Center_Z
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:ResultsVanderbilt001_
+    Overwrite existing files without warning?:No
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes

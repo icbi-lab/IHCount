@@ -1,11 +1,11 @@
 # IHCount workflow
 
-This is a general workflow, used for the quantitative analysis of multiple IHC-Images. The pipeline we setup for this analysis utilises several public available tools for the different steps of pre-processing ([Python](https://www.python.org/download/releases/2.7/)<sup>1</sup>, [bftools](https://docs.openmicroscopy.org/bio-formats/5.7.1/users/comlinetools/index.html)<sup>2</sup>, [libvips](http://www.vips.ecs.soton.ac.uk)<sup>3</sup>), classification([Ilastik](http://ilastik.org/download.html)<sup>4</sup>) and segmentation ([CellProfiler](http://cellprofiler.org)<sup>5</sup>). The individual steps of this workflow were combined in a python script [runCP.py](/runCP.py), which is easy to use and to adapt. 
+This is a general workflow, used for the quantitative analysis of multiple IHC-Images. The pipeline we setup for this analysis utilises several publicly available tools for the different steps of pre-processing ([Python](https://www.python.org/download/releases/2.7/)<sup>1</sup>, [bftools](https://docs.openmicroscopy.org/bio-formats/5.7.1/users/comlinetools/index.html)<sup>2</sup>, [libvips](http://www.vips.ecs.soton.ac.uk)<sup>3</sup>), classification([Ilastik](http://ilastik.org/download.html)<sup>4</sup>) and segmentation ([CellProfiler](http://cellprofiler.org)<sup>5</sup>). The individual steps of this workflow were combined in a python script [runCP.py](/runCP.py), which is easy to adapt. 
 
 
 #### Preprocessing
 
-For the preparation of the IHC-images for further analysis, we used the script collection bftools from the [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764)<sup>6</sup>. As a first step, high-resolution bright-field images were extracted from the image containers. Following this, each of these high-resolution images was tiled into smaller subimages, which can be used as training data.
+For the preparation of the IHC-images for further analysis, we used the script collection bftools from the [OME - Bio-Formats](https://www.ncbi.nlm.nih.gov/pubmed/20513764)<sup>6</sup>. As a first step, high-resolution bright-field images were extracted from the image containers available in Leica (SCN) format. Following this, each of these high-resolution images was tiled into smaller subimages, which can be used as training data.
 
 ![alt text](/images/preprocessing.jpg)
 
@@ -16,16 +16,16 @@ The Pixel Classificator module of Ilastik was used to establish classifiers from
 generated image tiles. Using manual annotation, the classifiers were trained to distinguish positively stained
 cells and all nuclei on the selected IHC-Images, as well as tissue and background. As a result of running the
 classifier as a batch process on all tiles of a slide, we obtained two sets of so called probability maps. One set shows
-the probabilities for positively stained cells and the second for all nuclei on the slide. These maps were used
-in the following segmentation and quantification step.
+the probabilities for positively stained cells and the second for all nuclei on the slide, together with the probabilities for stromal tissue and background. These maps were used
+in the following segmentation and quantification steps.
 
 ![alt text](/images/classification_workflow.jpg)
 
 
 #### Cell counting and extraction of spatial features
 
-The segmentation and counting, as the final step in this workflow, was performed by CellProfiler. The probability maps 
-were loaded into CellProfiler, either using the GUI or running it from the command line. We created a pipeline ([IHCount.cppipe](/IHCount.cppipe)) that utilises several internal modules to identify positive stained cells, nuclei and the area of tissue. As a first step the probability maps were split by the different colour channels red, blue and green and converted into grayscale. By multiple intensity based operations, we tried to reduce noise and to isolate the three different classes as good as possible. In the end, we received result tables for each image, which list the questioned parameters for each single tile.
+The cell segmentation and counting, as the final steps in this workflow, were performed by CellProfiler. The probability maps together with the original tiles 
+were loaded into CellProfiler, either using the GUI or running it from the command line. We created a pipeline ([IHCount.cppipe](/IHCount.cppipe)) that utilises several intensity based modules for image processing to identify and quantify positive stained cells, nuclei and the area of tissue.
 
 ![alt text](/images/cp_workflow.jpg)
 
